@@ -1,0 +1,15 @@
+{{ define "index" }}
+<!DOCType html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>websample2</title>
+</head>
+<body>
+count = {{ .Detail.Count }}<br />
+msg = {{ .Detail.Msg }}<br />
+<br />
+<a href="/clear">クリア<a/>
+</body>
+</html>
+{{ end }}
