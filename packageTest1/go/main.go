@@ -1,17 +1,19 @@
 package main
 
 import (
-	"net/http"
+	"net"
+    	"net/http"
 	"./handler"
-	_ "github.com/lib/pq"
+    	"net/http/fcgi"
+
 )
 
 func main() {
-	server := http.Server{
-		Addr: "localhost:8080",
-	}
+	l, err := net.Listen("tcp", "127.0.0.1:9000")
+    	if err != nil {
+        	return
+    	}
 
 	http.HandleFunc("/top", handler.TopHandler)
-
-	server.ListenAndServe()
+	fcgi.Serve(l, nil)
 }

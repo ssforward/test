@@ -4,7 +4,9 @@ import (
 	"encoding/gob"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/sessions"
+	"net"
 	"net/http"
+	"net/http/fcgi"
 	"fmt"
 	"time"
 	"html/template"
@@ -92,8 +94,12 @@ func main(){
 	http.Handle("/", r)
 
 	// ポートを割当
-	fmt.Println("localhost:9001")
-	http.ListenAndServe(":9001", nil)
+	l, err := net.Listen("tcp", "127.0.0.1:9000")
+	if err != nil {
+       		return
+   	}
+
+   	fcgi.Serve(l, nil)
 }
 
 // セッション用の初期処理
@@ -113,7 +119,7 @@ func sessionInit() {
 
 	// セッションの有効範囲を指定
 	store.Options = &sessions.Options{
-		Domain:   "localhost",
+		Domain:   "127.0.0.1",
 		Path:     "/",
 		MaxAge:   0,
 		Secure:   false,
